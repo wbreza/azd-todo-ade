@@ -1,0 +1,20 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Azure/azure-dev/main/schemas/v1.0/azure.yaml.json
+
+name: todo-nodejs-mongo-aca
+metadata:
+    template: todo-nodejs-mongo-aca@0.0.1-beta
+services:
+    api:
+        project: ./src/api
+        host: containerapp
+        language: js
+    web:
+        project: ./src/web
+        host: containerapp
+        language: js
+platform:
+    type: devcenter
+    config:
+        catalog: wbreza
+        environmentDefinition: Todo
+        name: dc-wabrez-e43fief5trome
