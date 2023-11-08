@@ -29,8 +29,11 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Install azd
-        uses: Azure/setup-azd@v0.1.0
-      
+        run: |
+          Invoke-RestMethod 'https://aka.ms/uninstall-azd.ps1' -OutFile 'uninstall-azd.ps1'; ./uninstall-azd.ps1 -Version 'daily'
+          Invoke-RestMethod 'https://aka.ms/install-azd.ps1' -OutFile 'install-azd.ps1'; ./install-azd.ps1 -Version 'daily'
+        shell: pwsh
+
       - name: Install Nodejs
         uses: actions/setup-node@v3
         with:
@@ -65,6 +68,7 @@ jobs:
           AZURE_ENV_NAME: ${{ vars.AZURE_ENV_NAME }}
           AZURE_LOCATION: ${{ vars.AZURE_LOCATION }}
           AZURE_SUBSCRIPTION_ID: ${{ vars.AZURE_SUBSCRIPTION_ID }}
+          AZURE_DEVCENTER_ENVIRONMENT_TYPE: Test
 
       - name: Deploy Application
         run: azd deploy --no-prompt
@@ -72,3 +76,4 @@ jobs:
           AZURE_ENV_NAME: ${{ vars.AZURE_ENV_NAME }}
           AZURE_LOCATION: ${{ vars.AZURE_LOCATION }}
           AZURE_SUBSCRIPTION_ID: ${{ vars.AZURE_SUBSCRIPTION_ID }}
+          AZURE_DEVCENTER_ENVIRONMENT_TYPE: Test
