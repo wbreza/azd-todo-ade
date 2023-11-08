@@ -60,7 +60,7 @@ jobs:
           AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
 
       - name: Remove Infrastructure
-        run: azd down --no-prompt
+        run: azd down --force --purge --no-prompt
         env:
           AZURE_ENV_NAME: ${{ vars.AZURE_ENV_NAME }}-pr-${{ github.event.pull_request.number }}
           AZURE_LOCATION: ${{ vars.AZURE_LOCATION }}
