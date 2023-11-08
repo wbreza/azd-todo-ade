@@ -1,6 +1,8 @@
 on:
   pull_request:
     types: [closed]
+    branches:
+      - main
 
 # GitHub Actions workflow to deploy to Azure using azd
 # To configure required secrets for connecting to Azure, simply run `azd pipeline config`
