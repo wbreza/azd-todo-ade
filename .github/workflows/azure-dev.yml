@@ -17,34 +17,26 @@ permissions:
   contents: read
 
 jobs:
-  build:
+  setup:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+  install-azd:
+    uses: wbreza/azd-todo-ade/.github/workflows/azd-install.yml@reuseable-workflows
+    with:
+      version: daily
+  login:
+    uses: wbreza/azd-todo-ade/.github/workflows/azd-login.yml@reuseable-workflows
+    with:
+      clientId: ${{ vars.AZURE_CLIENT_ID }}
+      tenantId: ${{ vars.AZURE_TENANT_ID }}
+      subscriptionId: ${{ vars.AZURE_SUBSCRIPTION_ID }}
+    secrets:
+      credentials: ${{ secrets.AZURE_CREDENTIALS }}
+  up:
+    uses: wbreza/azd-todo-ade/.github/workflows/azd-up.yml@reuseable-workflows
+    with:
+      envName: ${{ vars.AZURE_ENV_NAME }}
+      location: ${{ vars.AZURE_LOCATION }}
 
-      - name: Install azd
-        uses: wbreza/azd-todo-ade/.github/workflows/azd-install.yml@main
-        with:
-          version: daily
-
-      - name: Install Nodejs
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18
-
-      - name: azd login
-        uses: wbreza/azd-todo-ade/.github/workflows/azd-login.yml@main
-        with:
-          clientId: ${{ vars.AZURE_CLIENT_ID }}
-          tenantId: ${{ vars.AZURE_TENANT_ID }}
-          subscriptionId: ${{ vars.AZURE_SUBSCRIPTION_ID }}
-        secrets:
-          credentials: ${{ secrets.AZURE_CREDENTIALS }}
-
-      - name: azd up
-        uses: wbreza/azd-todo-ade/.github/workflows/azd-up.yml@main
-        with:
-          envName: ${{ vars.AZURE_ENV_NAME }}
-          location: ${{ vars.AZURE_LOCATION }}
-  
