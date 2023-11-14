@@ -1,0 +1,22 @@
+name: azd-install
+
+on:
+  workflow_call:
+    inputs:
+      version:
+        type: string
+        required: true
+        default: 'daily'
+jobs:
+  install:
+    name: Install Azd
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Install azd
+        run: |
+          Invoke-RestMethod 'https://aka.ms/uninstall-azd.ps1' -OutFile 'uninstall-azd.ps1'; ./uninstall-azd.ps1 -Version '${{ inputs.version }}'
+          Invoke-RestMethod 'https://aka.ms/install-azd.ps1' -OutFile 'install-azd.ps1'; ./install-azd.ps1 -Version '${{ inputs.version }}'
+        shell: pwsh

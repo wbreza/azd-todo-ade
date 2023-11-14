@@ -1,0 +1,51 @@
+name: azd-login
+
+on:
+  workflow_call:
+    inputs:
+      AZURE_CLIENT_ID:
+        type: string
+        description: "Azure Client ID"
+        required: false
+      AZURE_TENANT_ID:
+        type: string
+        description: "Azure Tenant ID"
+        required: false
+      AZURE_SUBSCRIPTION_ID:
+        type: string
+        description: "Azure Subscription ID"
+        required: false
+    secrets:
+      AZURE_CREDENTIALS:
+        description: "Azure Credentials"
+        required: false
+jobs:
+  login:
+    name: azd login
+    runs-on: ubuntu-latest
+    env:
+      AZURE_CLIENT_ID: ${{ inputs.AZURE_CLIENT_ID }}
+      AZURE_TENANT_ID: ${{ inputs.AZURE_TENANT_ID }}
+      AZURE_SUBSCRIPTION_ID: ${{ inputs.AZURE_SUBSCRIPTION_ID }}
+      AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
+    steps:
+      - name: Log in with Azure (Federated Credentials)
+        if: ${{ env.AZURE_CLIENT_ID != '' }}
+        run: |
+          azd auth login `
+            --client-id "$Env:AZURE_CLIENT_ID" `
+            --federated-credential-provider "github" `
+            --tenant-id "$Env:AZURE_TENANT_ID"
+        shell: pwsh
+
+      - name: Log in with Azure (Client Credentials)
+        if: ${{ env.AZURE_CREDENTIALS != '' }}
+        run: |
+          $info = $Env:AZURE_CREDENTIALS | ConvertFrom-Json -AsHashtable;
+          Write-Host "::add-mask::$($info.clientSecret)"
+
+          azd auth login `
+            --client-id "$($info.clientId)" `
+            --client-secret "$($info.clientSecret)" `
+            --tenant-id "$($info.tenantId)"
+        shell: pwsh

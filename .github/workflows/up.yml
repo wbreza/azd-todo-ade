@@ -1,0 +1,35 @@
+name: azd-up
+
+on:
+  workflow_call:
+    inputs:
+      envName:
+        type: string
+        required: true
+      environmentType:
+        type: string
+      location:
+        type: string
+        required: true
+        default: ${{ vars.AZURE_LOCATION }}
+      subscriptionId:
+        type: string
+        required: true
+        default: ${{ vars.AZURE_SUBSCRIPTION_ID }}
+      tenantId:
+        type: string
+        required: true
+        default: ${{ vars.AZURE_TENANT_ID }}
+jobs:
+  login:
+    name: azd login
+    runs-on: ubuntu-latest
+    env:
+      AZURE_ENV_NAME: ${{ inputs.envName }}
+      AZURE_LOCATION: ${{ inputs.location }}
+      AZURE_TENANT_ID: ${{ inputs.tenantId }}
+      AZURE_SUBSCRIPTION_ID: ${{ inputs.subscriptionId }}
+      AZURE_DEVCENTER_ENVIRONMENT_TYPE: ${{ inputs.environmentType }}
+    steps:
+      - name: Package, Provision & Deploy Application
+        run: azd up --no-prompt

@@ -1,0 +1,35 @@
+name: azd-down
+
+on:
+  workflow_call:
+    inputs:
+      envName:
+        type: string
+        required: true
+      environmentType:
+        type: string
+      location:
+        type: string
+        required: true
+        default: ${{ vars.AZURE_LOCATION }}
+      subscriptionId:
+        type: string
+        required: true
+        default: ${{ vars.AZURE_SUBSCRIPTION_ID }}
+      tenantId:
+        type: string
+        required: true
+        default: ${{ vars.AZURE_TENANT_ID }}
+jobs:
+  down:
+    name: azd down
+    runs-on: ubuntu-latest
+    env:
+      AZURE_ENV_NAME: ${{ inputs.envName }}
+      AZURE_LOCATION: ${{ inputs.location }}
+      AZURE_TENANT_ID: ${{ inputs.tenantId }}
+      AZURE_SUBSCRIPTION_ID: ${{ inputs.subscriptionId }}
+      AZURE_DEVCENTER_ENVIRONMENT_TYPE: ${{ inputs.environmentType }}
+    steps:
+      - name: Deletes the azure infrastructure for the application
+        run: azd down --force --purge --no-prompt
