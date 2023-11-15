@@ -1,0 +1,35 @@
+name: azd-down
+description: Deletes the azure infrastructure for the application
+
+inputs:
+  envName:
+    description: The name of the environment to delete
+    required: true
+  environmentType:
+    description: The type of environment to delete
+    default: ""
+  location:
+    description: The Azure location
+    required: true
+    default: ${{ vars.AZURE_LOCATION }}
+  subscriptionId:
+    description: The Azure subscription id
+    required: true
+    default: ${{ vars.AZURE_SUBSCRIPTION_ID }}
+  tenantId:
+    description: The Azure tenant id
+    required: true
+    default: ${{ vars.AZURE_TENANT_ID }}
+
+runs:
+  using: composite
+  steps:
+    - name: Delete the Azure Infrastructure
+      run: azd down --force --purge --no-prompt
+      shell: bash
+      env:
+        AZURE_ENV_NAME: ${{ inputs.envName }}
+        AZURE_LOCATION: ${{ inputs.location }}
+        AZURE_TENANT_ID: ${{ inputs.tenantId }}
+        AZURE_SUBSCRIPTION_ID: ${{ inputs.subscriptionId }}
+        AZURE_DEVCENTER_ENVIRONMENT_TYPE: ${{ inputs.environmentType }}
