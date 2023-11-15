@@ -17,7 +17,8 @@ permissions:
   contents: read
 
 jobs:
-  setup:
+  azd:
+    name: Create / Update Environment
     runs-on: ubuntu-latest
     steps:
       - name: Checkout

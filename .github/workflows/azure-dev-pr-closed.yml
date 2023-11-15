@@ -15,6 +15,7 @@ permissions:
 
 jobs:
   delete_pr_environment:
+    name: Delete PR Environment
     runs-on: ubuntu-latest
     steps:
       - name: Checkout

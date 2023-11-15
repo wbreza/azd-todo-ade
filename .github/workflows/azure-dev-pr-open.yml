@@ -14,7 +14,8 @@ permissions:
   contents: read
 
 jobs:
-  setup:
+  create_pr_environment:
+    name: Create / Update PR Environment
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
