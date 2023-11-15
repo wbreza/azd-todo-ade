@@ -3,20 +3,20 @@ name: azd-login
 on:
   workflow_call:
     inputs:
-      AZURE_CLIENT_ID:
+      clientId:
         type: string
         description: "Azure Client ID"
         required: false
-      AZURE_TENANT_ID:
+      tenantId:
         type: string
         description: "Azure Tenant ID"
         required: false
-      AZURE_SUBSCRIPTION_ID:
+      subscriptionId:
         type: string
         description: "Azure Subscription ID"
         required: false
     secrets:
-      AZURE_CREDENTIALS:
+      credentuals:
         description: "Azure Credentials"
         required: false
 jobs:
@@ -24,10 +24,10 @@ jobs:
     name: azd login
     runs-on: ubuntu-latest
     env:
-      AZURE_CLIENT_ID: ${{ inputs.AZURE_CLIENT_ID }}
-      AZURE_TENANT_ID: ${{ inputs.AZURE_TENANT_ID }}
-      AZURE_SUBSCRIPTION_ID: ${{ inputs.AZURE_SUBSCRIPTION_ID }}
-      AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
+      AZURE_CLIENT_ID: ${{ inputs.clientId }}
+      AZURE_TENANT_ID: ${{ inputs.tenantId }}
+      AZURE_SUBSCRIPTION_ID: ${{ inputs.subscriptionId }}
+      AZURE_CREDENTIALS: ${{ secrets.credentuals }}
     steps:
       - name: Log in with Azure (Federated Credentials)
         if: ${{ env.AZURE_CLIENT_ID != '' }}

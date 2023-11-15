@@ -20,9 +20,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
   install-azd:
-    uses: wbreza/azd-todo-ade/.github/workflows/azd-install.yml@reuseable-workflows
+    uses: wbreza/azd-todo-ade/.github/workflows/azd-install.yml@reusable-workflows
   login:
-    uses: wbreza/azd-todo-ade/.github/workflows/azd-login.yml@reuseable-workflows
+    uses: wbreza/azd-todo-ade/.github/workflows/azd-login.yml@reusable-workflows
     with:
       clientId: ${{ vars.AZURE_CLIENT_ID }}
       tenantId: ${{ vars.AZURE_TENANT_ID }}
@@ -30,7 +30,7 @@ jobs:
     secrets:
       credentials: ${{ secrets.AZURE_CREDENTIALS }}
   up:
-    uses: wbreza/azd-todo-ade/.github/workflows/azd-up.yml@reuseable-workflows
+    uses: wbreza/azd-todo-ade/.github/workflows/azd-up.yml@reusable-workflows
     with:
       envName: ${{ vars.AZURE_ENV_NAME }}-pr-${{ github.event.pull_request.number }}
       location: ${{ vars.AZURE_LOCATION }}
