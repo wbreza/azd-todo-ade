@@ -1,19 +1,16 @@
 name: azd-login
+description: Logs in to Azure
 
 inputs:
   clientId:
-    type: string
     description: "Azure Client ID"
     required: false
   tenantId:
-    type: string
     description: "Azure Tenant ID"
     required: false
   subscriptionId:
-    type: string
     description: "Azure Subscription ID"
     required: false
-secrets:
   credentials:
     description: "Azure Credentials"
     required: false

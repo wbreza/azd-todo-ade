@@ -1,8 +1,8 @@
 name: azd-install
+description: Installs the Azure Developer CLI
 
 inputs:
   version:
-    type: string
     required: false
     default: "daily"
 runs:

@@ -1,21 +1,19 @@
 name: azd-up
+description: Packages, provisions and deploys the application to Azure
 
 inputs:
   envName:
-    type: string
     required: true
   environmentType:
-    type: string
+    default: ""
   location:
     type: string
     required: true
     default: ${{ vars.AZURE_LOCATION }}
   subscriptionId:
-    type: string
     required: true
     default: ${{ vars.AZURE_SUBSCRIPTION_ID }}
   tenantId:
-    type: string
     required: true
     default: ${{ vars.AZURE_TENANT_ID }}
 
