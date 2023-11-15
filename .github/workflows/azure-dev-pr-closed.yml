@@ -14,26 +14,26 @@ permissions:
   contents: read
 
 jobs:
-  setup:
+  delete_pr_environment:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-  install-azd:
-    uses: wbreza/azd-todo-ade/.github/workflows/azd-install.yml@reusable-workflows
-  login:
-    uses: wbreza/azd-todo-ade/.github/workflows/azd-login.yml@reusable-workflows
-    with:
-      clientId: ${{ vars.AZURE_CLIENT_ID }}
-      tenantId: ${{ vars.AZURE_TENANT_ID }}
-      subscriptionId: ${{ vars.AZURE_SUBSCRIPTION_ID }}
-    secrets:
-      credentials: ${{ secrets.AZURE_CREDENTIALS }}
-  up:
-    uses: wbreza/azd-todo-ade/.github/workflows/azd-down.yml@reusable-workflows
-    with:
-      envName: ${{ vars.AZURE_ENV_NAME }}-pr-${{ github.event.pull_request.number }}
-      location: ${{ vars.AZURE_LOCATION }}
-      subscriptionId: ${{ vars.AZURE_SUBSCRIPTION_ID }}
-      tenantId: ${{ vars.AZURE_TENANT_ID }}
-      environmentType: Test
+      - name: azd install
+        uses: actions/azd-install.yml@reusable-workflows
+      - name: azd login
+        uses: actions/azd-login.yml@reusable-workflows
+        with:
+          clientId: ${{ vars.AZURE_CLIENT_ID }}
+          tenantId: ${{ vars.AZURE_TENANT_ID }}
+          subscriptionId: ${{ vars.AZURE_SUBSCRIPTION_ID }}
+        secrets:
+          credentials: ${{ secrets.AZURE_CREDENTIALS }}
+      - name: azd up
+        uses: actions/azd-down.yml@reusable-workflows
+        with:
+          envName: ${{ vars.AZURE_ENV_NAME }}-pr-${{ github.event.pull_request.number }}
+          location: ${{ vars.AZURE_LOCATION }}
+          subscriptionId: ${{ vars.AZURE_SUBSCRIPTION_ID }}
+          tenantId: ${{ vars.AZURE_TENANT_ID }}
+          environmentType: Test
