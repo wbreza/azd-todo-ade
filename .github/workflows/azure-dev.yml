@@ -24,16 +24,16 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: install azd
-        uses: ./actions/azd-install@v1
+        uses: ./.github/actions/azd-install
       - name: azd login
-        uses: ./actions/azd-login@v1
+        uses: ./.github/actions/azd-login
         with:
           clientId: ${{ vars.AZURE_CLIENT_ID }}
           tenantId: ${{ vars.AZURE_TENANT_ID }}
           subscriptionId: ${{ vars.AZURE_SUBSCRIPTION_ID }}
           credentials: ${{ secrets.AZURE_CREDENTIALS }}
       - name: azd up
-        uses: ./actions/azd-up@v1
+        uses: ./.github/actions/azd-up
         with:
           envName: ${{ vars.AZURE_ENV_NAME }}
           location: ${{ vars.AZURE_LOCATION }}
