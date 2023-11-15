@@ -14,55 +14,26 @@ permissions:
   contents: read
 
 jobs:
-  build:
+  setup:
     runs-on: ubuntu-latest
-    env:
-      AZURE_CLIENT_ID: ${{ vars.AZURE_CLIENT_ID }}
-      AZURE_TENANT_ID: ${{ vars.AZURE_TENANT_ID }}
-      AZURE_SUBSCRIPTION_ID: ${{ vars.AZURE_SUBSCRIPTION_ID }}
-      AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-
-      - name: Install azd
-        run: |
-          Invoke-RestMethod 'https://aka.ms/uninstall-azd.ps1' -OutFile 'uninstall-azd.ps1'; ./uninstall-azd.ps1 -Version 'daily'
-          Invoke-RestMethod 'https://aka.ms/install-azd.ps1' -OutFile 'install-azd.ps1'; ./install-azd.ps1 -Version 'daily'
-        shell: pwsh
-
-      - name: Install Nodejs
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18
-
-      - name: Log in with Azure (Federated Credentials)
-        if: ${{ env.AZURE_CLIENT_ID != '' }}
-        run: |
-          azd auth login `
-            --client-id "$Env:AZURE_CLIENT_ID" `
-            --federated-credential-provider "github" `
-            --tenant-id "$Env:AZURE_TENANT_ID"
-        shell: pwsh
-
-      - name: Log in with Azure (Client Credentials)
-        if: ${{ env.AZURE_CREDENTIALS != '' }}
-        run: |
-          $info = $Env:AZURE_CREDENTIALS | ConvertFrom-Json -AsHashtable;
-          Write-Host "::add-mask::$($info.clientSecret)"
-
-          azd auth login `
-            --client-id "$($info.clientId)" `
-            --client-secret "$($info.clientSecret)" `
-            --tenant-id "$($info.tenantId)"
-        shell: pwsh
-        env:
-          AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
-
-      - name: Remove Infrastructure
-        run: azd down --force --purge --no-prompt
-        env:
-          AZURE_ENV_NAME: ${{ vars.AZURE_ENV_NAME }}-pr-${{ github.event.pull_request.number }}
-          AZURE_LOCATION: ${{ vars.AZURE_LOCATION }}
-          AZURE_SUBSCRIPTION_ID: ${{ vars.AZURE_SUBSCRIPTION_ID }}
-          AZURE_DEVCENTER_ENVIRONMENT_TYPE: Test
+  install-azd:
+    uses: wbreza/azd-todo-ade/.github/workflows/azd-install.yml@reuseable-workflows
+  login:
+    uses: wbreza/azd-todo-ade/.github/workflows/azd-login.yml@reuseable-workflows
+    with:
+      clientId: ${{ vars.AZURE_CLIENT_ID }}
+      tenantId: ${{ vars.AZURE_TENANT_ID }}
+      subscriptionId: ${{ vars.AZURE_SUBSCRIPTION_ID }}
+    secrets:
+      credentials: ${{ secrets.AZURE_CREDENTIALS }}
+  up:
+    uses: wbreza/azd-todo-ade/.github/workflows/azd-down.yml@reuseable-workflows
+    with:
+      envName: ${{ vars.AZURE_ENV_NAME }}-pr-${{ github.event.pull_request.number }}
+      location: ${{ vars.AZURE_LOCATION }}
+      subscriptionId: ${{ vars.AZURE_SUBSCRIPTION_ID }}
+      tenantId: ${{ vars.AZURE_TENANT_ID }}
+      environmentType: Test

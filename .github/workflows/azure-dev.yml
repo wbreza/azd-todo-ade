@@ -24,8 +24,6 @@ jobs:
         uses: actions/checkout@v3
   install-azd:
     uses: wbreza/azd-todo-ade/.github/workflows/azd-install.yml@reuseable-workflows
-    with:
-      version: daily
   login:
     uses: wbreza/azd-todo-ade/.github/workflows/azd-login.yml@reuseable-workflows
     with:
@@ -39,4 +37,5 @@ jobs:
     with:
       envName: ${{ vars.AZURE_ENV_NAME }}
       location: ${{ vars.AZURE_LOCATION }}
-
+      subscriptionId: ${{ vars.AZURE_SUBSCRIPTION_ID }}
+      tenantId: ${{ vars.AZURE_TENANT_ID }}
