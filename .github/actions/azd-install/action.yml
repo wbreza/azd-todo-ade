@@ -3,6 +3,7 @@ description: Installs the Azure Developer CLI
 
 inputs:
   version:
+    description: The version of the Azure Developer CLI to install
     required: false
     default: "daily"
 runs:
