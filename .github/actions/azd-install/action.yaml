@@ -1,0 +1,18 @@
+name: azd-install
+description: Installs the Azure Developer CLI
+
+inputs:
+  version:
+    description: The version of the Azure Developer CLI to install
+    required: false
+    default: "daily"
+runs:
+  using: composite
+  steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+    - name: Install Azd
+      run: |
+        Invoke-RestMethod 'https://aka.ms/uninstall-azd.ps1' -OutFile 'uninstall-azd.ps1'; ./uninstall-azd.ps1 -Version '${{ inputs.version }}'
+        Invoke-RestMethod 'https://aka.ms/install-azd.ps1' -OutFile 'install-azd.ps1'; ./install-azd.ps1 -Version '${{ inputs.version }}'
+      shell: pwsh
