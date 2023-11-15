@@ -5,7 +5,7 @@ on:
     inputs:
       version:
         type: string
-        required: true
+        required: false
         default: 'daily'
 jobs:
   install:
