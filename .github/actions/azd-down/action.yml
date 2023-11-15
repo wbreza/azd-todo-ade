@@ -11,15 +11,12 @@ inputs:
   location:
     description: The Azure location
     required: true
-    default: ${{ vars.AZURE_LOCATION }}
   subscriptionId:
     description: The Azure subscription id
     required: true
-    default: ${{ vars.AZURE_SUBSCRIPTION_ID }}
   tenantId:
     description: The Azure tenant id
     required: true
-    default: ${{ vars.AZURE_TENANT_ID }}
 
 runs:
   using: composite
