@@ -48,4 +48,4 @@ runs:
         AZURE_CLIENT_ID: ${{ inputs.clientId }}
         AZURE_TENANT_ID: ${{ inputs.tenantId }}
         AZURE_SUBSCRIPTION_ID: ${{ inputs.subscriptionId }}
-        AZURE_CREDENTIALS: ${{ secrets.credentials }}
+        AZURE_CREDENTIALS: ${{ inputs.credentials }}
