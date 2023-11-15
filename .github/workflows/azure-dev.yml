@@ -23,9 +23,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: install azd
-        uses: actions/azd-install.yml@reusable-workflows
+        uses: actions/azd-install@reusable-workflows
       - name: azd login
-        uses: actions/azd-login.yml@reusable-workflows
+        uses: actions/azd-login@reusable-workflows
         with:
           clientId: ${{ vars.AZURE_CLIENT_ID }}
           tenantId: ${{ vars.AZURE_TENANT_ID }}
@@ -33,7 +33,7 @@ jobs:
         secrets:
           credentials: ${{ secrets.AZURE_CREDENTIALS }}
       - name: azd up
-        uses: actions/azd-up.yml@reusable-workflows
+        uses: actions/azd-up@reusable-workflows
         with:
           envName: ${{ vars.AZURE_ENV_NAME }}
           location: ${{ vars.AZURE_LOCATION }}
