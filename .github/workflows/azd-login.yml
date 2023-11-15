@@ -16,7 +16,7 @@ on:
         description: "Azure Subscription ID"
         required: false
     secrets:
-      credentuals:
+      credentials:
         description: "Azure Credentials"
         required: false
 jobs:
@@ -27,7 +27,7 @@ jobs:
       AZURE_CLIENT_ID: ${{ inputs.clientId }}
       AZURE_TENANT_ID: ${{ inputs.tenantId }}
       AZURE_SUBSCRIPTION_ID: ${{ inputs.subscriptionId }}
-      AZURE_CREDENTIALS: ${{ secrets.credentuals }}
+      AZURE_CREDENTIALS: ${{ secrets.credentials }}
     steps:
       - name: Log in with Azure (Federated Credentials)
         if: ${{ env.AZURE_CLIENT_ID != '' }}
