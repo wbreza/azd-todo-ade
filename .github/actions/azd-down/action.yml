@@ -24,6 +24,8 @@ inputs:
 runs:
   using: composite
   steps:
+    - name: Checkout
+      uses: actions/checkout@v3
     - name: Delete the Azure Infrastructure
       run: azd down --force --purge --no-prompt
       shell: bash
